@@ -1,0 +1,278 @@
+﻿<UserControl x:Class="StrawberryMusic.View.NowPlayingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StrawberryMusic.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="MyButtonStyle" 
+               TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" 
+                    Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                            Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="border" 
+                                        Property="Opacity" 
+                                        Value="0.7" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="1" BorderBrush="Black" Background="Black" Height="3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="Green"  BorderThickness="1" BorderBrush="YellowGreen" Height="3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse x:Name="Ellipse" Height="15" Width="15" Fill="Green"></Ellipse>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="Yellow"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Width="50"
+                    Height="50"
+                    Style="{StaticResource MyButtonStyle}"
+                    Command="{Binding preSongCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Resource/left.png"/>
+                </Button.Background>
+            </Button>
+
+            <TextBlock Grid.Column="1"
+                       Text="{Binding DisplayInfo.PreSong, UpdateSourceTrigger=PropertyChanged}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="10"
+                       Margin="5"
+                       Foreground="White"
+                       TextWrapping="WrapWithOverflow"/>
+
+            <TextBlock Grid.Column="2"
+                       Text="{Binding DisplayInfo.NowSong, UpdateSourceTrigger=PropertyChanged}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="20"
+                       Foreground="White"
+                       TextWrapping="WrapWithOverflow"/>
+            
+            <TextBlock Grid.Column="3"
+                       Text="{Binding DisplayInfo.NextSong, UpdateSourceTrigger=PropertyChanged}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="10" 
+                       Margin="5"
+                       Foreground="White"
+                       TextWrapping="WrapWithOverflow"/>
+            
+            <Button Grid.Column="4"
+                    Width="50"
+                    Height="50"
+                    Style="{StaticResource MyButtonStyle}"
+                    Command="{Binding nextSongCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Resource/right.png"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+
+            <!--<Rectangle Grid.Row="0"
+                                   Grid.ColumnSpan="3"
+                                   Margin="15, 0"
+                                   Height="5"
+                                   Fill="Red"
+                                   HorizontalAlignment="Left"
+                                   Width="{Binding visualStatus, UpdateSourceTrigger=PropertyChanged}"/>-->
+
+            <Slider Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Minimum="0"
+                    Height="10"    
+                    Margin="10, 0"
+                    IsMoveToPointEnabled="True"
+                    Background="Transparent"
+                    TickFrequency="500"
+                    Style="{StaticResource Horizontal_Slider}"
+                    Maximum="{Binding DisplayInfo.SliderLength, UpdateSourceTrigger=PropertyChanged}"
+
+                    Value="{Binding DisplayInfo.SliderValue, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Text="{Binding SongInfo.Position, UpdateSourceTrigger=PropertyChanged, StringFormat=mm\\:ss}"
+                       Foreground="White"/>
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="2"
+                       HorizontalAlignment="Right"
+                       Foreground="White"
+                       Text="{Binding SongInfo.TotalLength, UpdateSourceTrigger=PropertyChanged, StringFormat=mm\\:ss}"/>
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1"
+                    Style="{StaticResource MyButtonStyle}"
+                    Width="50"
+                    Height="50"
+                    BorderThickness="0"
+                    Command="{Binding playButtonCommand}">
+
+                <Button.Background>
+                    <ImageBrush ImageSource="{Binding DisplayInfo.ButtonImage, UpdateSourceTrigger=PropertyChanged}"/>
+                </Button.Background>
+                
+            </Button>
+
+            <Rectangle Grid.Column="2"
+                       Width="{Binding SongInfo.Volume, UpdateSourceTrigger=PropertyChanged}"
+                       Height="5"
+                       Margin="5, 0"
+                       HorizontalAlignment="Left"
+                       Fill="Red"/>
+
+            <Slider Grid.Column="2"
+                    Width="100"
+                    Height="6"
+                    Minimum="0"
+                    Maximum="100"
+                    IsMoveToPointEnabled="True"
+                    Value="{Binding SongInfo.Volume, UpdateSourceTrigger=PropertyChanged}"
+                    Background="Transparent"/>
+
+            <Button Grid.Column="3"
+                    Width="40"
+                    Margin="20"
+                    Command="{Binding playModeCommand}"
+                    Style="{StaticResource MyButtonStyle}">
+
+                <Button.Background>
+                    <ImageBrush ImageSource="{Binding DisplayInfo.PlayModeImage, UpdateSourceTrigger=PropertyChanged}"/>
+                </Button.Background>
+            </Button>
+
+        </Grid>
+    </Grid>
+</UserControl>

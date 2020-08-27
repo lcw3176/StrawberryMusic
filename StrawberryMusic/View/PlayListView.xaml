@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="StrawberryMusic.View.PlayListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StrawberryMusic.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="MyButtonStyle" 
+               TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" 
+                    Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                            Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="border" 
+                                        Property="Opacity" 
+                                        Value="0.7" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0"
+                Content="새로고침"
+                Foreground="White"
+                Margin="10"
+                Style="{StaticResource MyButtonStyle}"
+                Command="{Binding refreshCommand}"
+                HorizontalAlignment="Right"/>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto"
+                      Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding MediaFile, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button HorizontalContentAlignment="Stretch"
+                                FontSize="15"
+                                Foreground="White"
+                                Margin="5"
+                                Style="{StaticResource MyButtonStyle}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding playSongCommand}"
+                                CommandParameter="{Binding name}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--<TextBlock Text="{Binding id}"
+                                       Grid.Column="0"/>-->
+                                <TextBlock Text="."
+                                       Grid.Column="1"/>
+                                <TextBlock Text="{Binding visualName}"
+                                       Grid.Column="2"/>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
+    </Grid>
+</UserControl>
