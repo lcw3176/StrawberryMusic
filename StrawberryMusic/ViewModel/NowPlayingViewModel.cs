@@ -38,7 +38,7 @@ namespace StrawberryMusic.ViewModel
 
         public NowPlayingViewModel()
         {
-            model.playEnd += NextSongExecuteMethod;
+            model.playEndEvent += NextSongExecuteMethod;
             DisplayInfo.PropertyChanged += DisplayInfo_PropertyChanged;
             SongInfo.PropertyChanged += SongInfo_PropertyChanged;
 

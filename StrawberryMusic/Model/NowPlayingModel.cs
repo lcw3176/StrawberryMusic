@@ -17,8 +17,8 @@ namespace StrawberryMusic.Model
 
     class NowPlayingModel
     {
-        public delegate void PlayEnd(object Null); // NowPlayViewModel의 NextSongExecuteMethod와 연결됨. 다음곡으로 넘기는 기능
-        public event PlayEnd playEnd; 
+        public delegate void PlayEndEvent(object Null); // NowPlayViewModel의 NextSongExecuteMethod와 연결됨. 다음곡으로 넘기는 기능
+        public event PlayEndEvent playEndEvent; 
 
         private SongInfo songInfo = new SongInfo();
         private DisplayInfo displayInfo = new DisplayInfo();
@@ -129,7 +129,7 @@ namespace StrawberryMusic.Model
                 if (SongInfo.Position >= SongInfo.TotalLength) // 두개의 값이 같아지면 타이머 스탑
                 {
                     timer.Stop();
-                    playEnd(null);
+                    playEndEvent(null);
                 }
             }
         }
